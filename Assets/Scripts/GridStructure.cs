@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class GridStructure
@@ -18,7 +17,7 @@ public class GridStructure
         {
             for (int col = 0; col < _grid.GetLength(1); col++)
             {
-                 _grid[row,col] = new Cell();
+                _grid[row, col] = new Cell();
             }
         }
     }
@@ -30,21 +29,35 @@ public class GridStructure
         return new Vector3(x * _cellSize, 0, z * _cellSize);
     }
 
-    public Vector2Int CalculateGridIndex(Vector3 gridPosition)
+    private Vector2Int CalculateGridIndex(Vector3 gridPosition)
     {
         return new Vector2Int((int)(gridPosition.x / _cellSize), (int)(gridPosition.z / _cellSize));
     }
 
-    public bool IsCellTaken(Vector3 gridPosition)
+    public (bool isTaken, Vector2Int cellIndx) IsCellTaken(Vector3 gridPosition)
     {
         Vector2Int cellIndex = CalculateGridIndex(gridPosition);
 
-        if (cellIndex.x > 0 && cellIndex.x < _grid.GetLength((1)) &&
-            cellIndex.y > 0 && cellIndex.y < _grid.GetLength((0)))
+        if (cellIndex.x >= 0 && cellIndex.x <= _grid.GetLength((1)) &&
+            cellIndex.y >= 0 && cellIndex.y <= _grid.GetLength((0)))
         {
-            return _grid[cellIndex.y, cellIndex.x].IsTaken;
+            return (_grid[cellIndex.y, cellIndex.x].IsTaken, cellIndex);
         }
 
-        throw new IndexOutOfRangeException("No index:" +cellIndex + "in grid");
+        throw new IndexOutOfRangeException("No index:" + cellIndex + "in grid");
+    }
+
+    public void PlaceStructureOnGrid(GameObject structure, Vector3 gridPosition)
+    {
+        var res = IsCellTaken(gridPosition);
+        _grid[res.cellIndx.y, res.cellIndx.x].SetConstruction(structure);
+    }
+
+    [Obsolete("Replaced with Tuple as return value of method 'IsCellTaken'")]
+    private bool CheckCellValidity(Vector2Int cellIndex)
+    {
+        return (cellIndex.x >= 0 && cellIndex.x <= _grid.GetLength((1)) &&
+                cellIndex.y >= 0 && cellIndex.y <= _grid.GetLength((0)));
+
     }
 }

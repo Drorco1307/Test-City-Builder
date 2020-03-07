@@ -9,6 +9,7 @@ public class Cell
 
     public void SetConstruction(GameObject structureModel)
     {
+        if (structureModel == null) return;
         _structureModel = structureModel;
         _isTaken = true;
     }

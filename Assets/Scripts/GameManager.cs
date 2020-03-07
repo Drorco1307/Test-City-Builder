@@ -19,9 +19,9 @@ public class GameManager : MonoBehaviour
     private void HandlePoint(Vector3 position)
     {
         Vector3 gridPosition = _grid.CalculateGridPosition(position);
-        if (!_grid.IsCellTaken(gridPosition))
+        if (!_grid.IsCellTaken(gridPosition).isTaken)
         {
-            PlacementManager.CreateBuilding(gridPosition);
+            PlacementManager.CreateBuilding(gridPosition, _grid);
         }
     }
 

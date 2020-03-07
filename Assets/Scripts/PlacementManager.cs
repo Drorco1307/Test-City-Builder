@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlacementManager : MonoBehaviour
 {
@@ -10,17 +8,18 @@ public class PlacementManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void CreateBuilding(Vector3 gridPosition)
+    public void CreateBuilding(Vector3 gridPosition, GridStructure grid)
     {
-        Instantiate(BuildingPrefab, Ground.position+gridPosition, Quaternion.identity);
+        var newStructure = Instantiate(BuildingPrefab, Ground.position + gridPosition, Quaternion.identity);
+        grid.PlaceStructureOnGrid(newStructure, gridPosition);
     }
 }

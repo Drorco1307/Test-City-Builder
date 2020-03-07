@@ -7,12 +7,6 @@ public class InputManager : MonoBehaviour
 {
     public LayerMask MouseInputMask;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -28,8 +22,13 @@ public class InputManager : MonoBehaviour
             if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit, Mathf.Infinity, MouseInputMask))
             {
                 Vector3 position = hit.point - transform.position;
-                print(position);
+
             }
         }
     }
+
+    //private void CreateBuilding(Vector3 gridPosition)
+    //{
+    //    Instantiate(BuildingPrefab, gridPosition, Quaternion.identity);
+    //}
 }

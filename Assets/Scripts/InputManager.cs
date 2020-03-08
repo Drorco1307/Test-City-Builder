@@ -4,17 +4,20 @@ using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour, IInputManager
 {
-    public Action<Vector3> OnPointerDownHandler { get; set; }
+    private Action<Vector3> OnPointerDownHandler;
+    private Action<Vector3> OnPointerSecondDownHandler;
+    private Action OnPointerSecondUpHandler;
 
     public LayerMask MouseInputMask;
 
     // Update is called once per frame
     void Update()
     {
-        GetInput();
+        GetPointerPosition();
+        GetPanningPointer();
     }
 
-    public void GetInput()
+    private void GetPointerPosition()
     {
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
@@ -28,6 +31,20 @@ public class InputManager : MonoBehaviour, IInputManager
         }
     }
 
+    private void GetPanningPointer()
+    {
+        if (Input.GetMouseButton(1))
+        {
+            var position = Input.mousePosition;
+            OnPointerSecondDownHandler?.Invoke(position);
+        }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            OnPointerSecondUpHandler?.Invoke();
+        }
+    }
+
     public void AddListenerOnPointerDownEvent(Action<Vector3> listener)
     {
         OnPointerDownHandler += listener;
@@ -36,5 +53,25 @@ public class InputManager : MonoBehaviour, IInputManager
     public void RemoveListenerOnPointerDownEvent(Action<Vector3> listener)
     {
         OnPointerDownHandler -= listener;
+    }
+
+    public void AddOnPointerSecondDownEvent(Action<Vector3> listener)
+    {
+        OnPointerSecondDownHandler += listener;
+    }
+
+    public void RemoveOnPointerSecondDownEvent(Action<Vector3> listener)
+    {
+        OnPointerSecondDownHandler -= listener;
+    }
+
+    public void AddOnPointerSecondUpEvent(Action listener)
+    {
+        OnPointerSecondUpHandler += listener;
+    }
+
+    public void RemoveOnPointerSecondUpEvent(Action listener)
+    {
+        OnPointerSecondUpHandler -= listener;
     }
 }

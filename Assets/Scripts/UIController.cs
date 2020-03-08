@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    public Action OnBuildAreaHandler { get; set; }
-    public Action OnCancelActionHandler { get; set; }
+    private Action OnBuildAreaHandler;
+    private Action OnCancelActionHandler;
+
     public Button BuildResidentialAreaBtn;
     public Button CancelActionBtn;
     public GameObject CancelActionPanel; 
@@ -15,7 +16,7 @@ public class UIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CancelActionPanel.SetActive(false);
+        CancelActionPanel.SetActive(false); 
         BuildResidentialAreaBtn.onClick.AddListener(OnBuildAreaCallback);
         CancelActionBtn.onClick.AddListener(OnCancelActionCallback);
     }
@@ -38,5 +39,23 @@ public class UIController : MonoBehaviour
         OnCancelActionHandler?.Invoke();
     }
 
+    public void AddOnBuildAreaEvent(Action listener)
+    {
+        OnBuildAreaHandler += listener;
+    }
 
+    public void RemoveOnBuildAreaEvent(Action listener)
+    {
+        OnBuildAreaHandler -= listener;
+    }
+
+    public void AddOnCancelActionEvent(Action listener)
+    {
+        OnCancelActionHandler += listener;
+    }
+
+    public void RemoveCancelActionEvent(Action listener)
+    {
+        OnCancelActionHandler -= listener;
+    }
 }

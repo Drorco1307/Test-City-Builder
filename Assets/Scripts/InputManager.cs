@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InputManager : MonoBehaviour
+public class InputManager : MonoBehaviour, IInputManager
 {
     public Action<Vector3> OnPointerDownHandler { get; set; }
 
@@ -28,15 +28,13 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    //public void AddListenerOnPointerDownEvent(Action<Vector3> listener)
-    //{
-    //    OnPointerDownHandler += listener;
+    public void AddListenerOnPointerDownEvent(Action<Vector3> listener)
+    {
+        OnPointerDownHandler += listener;
+    }
 
-    //}
-
-    //public void RemoveListenerOnPointerDownEvent(Action<Vector3> listener)
-    //{
-    //    OnPointerDownHandler -= listener;
-
-    //}
+    public void RemoveListenerOnPointerDownEvent(Action<Vector3> listener)
+    {
+        OnPointerDownHandler -= listener;
+    }
 }
